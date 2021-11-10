@@ -4,30 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - _libgcc_mutex=0.1=conda_forge
-  - _openmp_mutex=4.5=1_gnu
-  - ca-certificates=2020.12.5=ha878542_0
-  - certifi=2020.12.5=py36h5fab9bb_1
-  - firefox=88.0.1=h9c3ff4c_0
-  - geckodriver=0.29.0=h3146498_0
-  - ld_impl_linux-64=2.33.1=h53a641e_7
-  - libedit=3.1.20191231=h14c3975_1
-  - libffi=3.3=he6710b0_2
-  - libgcc-ng=9.3.0=h2828fa1_19
-  - libgomp=9.3.0=h2828fa1_19
-  - libstdcxx-ng=9.3.0=h6de172a_19
-  - ncurses=6.2=he6710b0_1
-  - openssl=1.1.1k=h7f98852_0
-  - pip=20.3.3=py36h06a4308_0
-  - python=3.6.12=hcff3b4d_2
-  - python_abi=3.6=1_cp36m
-  - readline=8.1=h27cfd23_0
-  - setuptools=52.0.0=py36h06a4308_0
-  - sqlite=3.33.0=h62c20be_0
-  - tk=8.6.10=hbc83047_0
-  - wheel=0.36.2=pyhd3eb1b0_0
-  - xz=5.2.5=h7b6447c_0
-  - zlib=1.2.11=h7b6447c_3
   - pip:
     - absl-py==0.11.0
     - alabaster==0.7.12
@@ -59,7 +35,7 @@ dependencies:
     - cycler==0.10.0
     - cymem==2.0.5
     - cython==0.29.22
-    - dataclasses==0.8
+    - dataclasses==0.6
     - decorator==4.4.2
     - defusedxml==0.7.1
     - docformatter==1.4

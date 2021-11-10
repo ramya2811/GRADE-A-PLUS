@@ -5,8 +5,8 @@ import json
 from collections import defaultdict
 from nlgeval import NLGEval
 from bert_score import BERTScorer
-from adem_eval.eval import eval_adam
-from bleurt import score
+from adam_eval.eval import eval_adam
+#from bleurt import score
 import tensorflow as tf
 
 tf.compat.v1.flags.DEFINE_string('data','','') # magic to solve bleurt error
@@ -37,17 +37,17 @@ def adam(contexts, refs, hyps):
     scores = eval_adam(base_dir, contexts, refs, hyps)
     return scores.tolist()
 
-def bleurt(contexts, refs, hyps):
-    checkpoint = "bleurt/bleurt/test_checkpoint"
-    scorer = score.BleurtScorer(checkpoint)
-    scores = scorer.score(refs, hyps)
-    return scores
+# def bleurt(contexts, refs, hyps):
+#     checkpoint = "bleurt/bleurt/test_checkpoint"
+#     scorer = score.BleurtScorer(checkpoint)
+#     scores = scorer.score(refs, hyps)
+#     return scores
 
 def baseline_metrics(contexts, refs, hyps):
     results = nlgeval_metrics(refs, hyps)
     results['bert_score'] = bert_score(refs, hyps)
     results['adam'] = adam(contexts, refs, hyps)
-    results['bleurt'] = bleurt(contexts, refs, hyps)
+    #results['bleurt'] = bleurt(contexts, refs, hyps)
     return results
 
 def main(data):
@@ -109,8 +109,11 @@ if __name__ == '__main__':
     if args.data is not None:
         data_list = [args.data]
     else:
-        data_list = ['convai2_grade', 'dailydialog_grade', 'empatheticdialogues_grade',
-                   'personachat_usr', 'topicalchat_usr', 'dstc6']
+        #data_list = ['convai2_grade', 'dailydialog_grade', 'empatheticdialogues_grade',
+        #           'personachat_usr', 'topicalchat_usr', 'dstc6']
+
+        data_list = ['convai2_grade', 'dailydialog_grade', 'empatheticdialogues_grade']
+        #          'personachat_usr', 'topicalchat_usr', 'dstc6']
 
     for data in data_list:
         print(f'Evaluating {data}')

@@ -38,5 +38,5 @@ def load_grade_data(base_dir, dataset, model_name):
 
 
 if __name__ == '__main__':
-    data = load_grade_data('convai2', 'bert_ranker')
+    data = load_grade_data('.','convai2', 'bert_ranker')
     

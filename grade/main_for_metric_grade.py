@@ -121,11 +121,12 @@ def main():
 
     # Loads data
     print("LOADING DATA....")
+    #import pdb; pdb.set_trace()
+    vocab2id, id2vocab = build_vocab_id(os.path.join(args.dataset_dir, "keyword.vocab"))
     test_dataset = tx.data.MultiAlignedData(hparams=config_data.test_hparam,
                                       device=device)
     embedding_init_value = test_dataset.embedding_init_value
 
-    vocab2id, id2vocab = build_vocab_id(os.path.join(args.dataset_dir, "keyword.vocab"))
     pair_hops = load_tuples_hops(os.path.join(args.dataset_dir, "dialog_keyword_tuples_multiGraph.hop")) 
     if args.model_name == 'GRADE_K2_N10_N10':
         oneHop_mean_embedding_dict, twoHop_mean_embedding_dict = load_hop_mean_embedding(os.path.join(args.dataset_dir, '1st_hop_nr10.embedding'), \
@@ -177,6 +178,8 @@ def main():
                     pair_1_input_ids_repKeywords, pair_hops, vocab2id, id2vocab, args.unlimit_hop)
                 pair_1_batch_onehop_embedding_matrix, pair_1_batch_twohop_embedding_matrix=None, None
 
+           
+
             scores = model('metric', 
                 pair_1_input_ids_raw_text=pair_1_input_ids_raw_text,
                 pair_1_input_length_raw_text=pair_1_input_length_raw_text,
@@ -192,7 +195,7 @@ def main():
         
         score = np.round(np.mean(auto_scores),4)
         reduced_metrics[args.eval_metric_name] = score
-        auto_scores = np.squeeze(auto_scores, 1).tolist()
+        #auto_scores = np.squeeze(auto_scores, 1).tolist()
         non_reduced_metrics[args.eval_metric_name] = auto_scores
 
         return reduced_metrics, non_reduced_metrics

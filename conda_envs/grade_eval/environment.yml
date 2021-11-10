@@ -73,7 +73,7 @@ dependencies:
     - s3transfer==0.2.1
     - sacremoses==0.0.43
     - scipy==1.4.1
-    - sentencepiece==0.1.91
+    - clear==0.1.91
     - six==1.14.0
     - smart-open==4.1.2
     - tensorboard==1.14.0

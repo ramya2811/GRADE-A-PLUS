@@ -92,21 +92,21 @@ def main(eval_data, metric):
     if eval_data == 'convai2_grade':
         model_names = ['bert_ranker', 'dialogGPT', 'transformer_generator', 'transformer_ranker']
         for model in model_names:
-            scores = read_result(f'{data_path}/convai2_grade_{model}')
+            scores = read_result(f'{data_path}/eval_convai2_grade_{model}/model')
             target_dir = f'outputs/{metric}/grade_data/convai2/{model}'
             write_result(target_dir, metric, scores)
 
     elif eval_data == 'dailydialog_grade':
         model_names = ['transformer_generator', 'transformer_ranker']
         for model in model_names:
-            scores = read_result(f'{data_path}/dailydialog_grade_{model}')
+            scores = read_result(f'{data_path}/eval_dailydialog_grade_{model}/model')
             target_dir = f'outputs/{metric}/grade_data/dailydialog/{model}'
             write_result(target_dir, metric, scores)
 
     elif eval_data == 'empatheticdialogues_grade':
         model_names = ['transformer_generator', 'transformer_ranker']
         for model in model_names:
-            scores = read_result(f'{data_path}/empatheticdialogues_grade_{model}')
+            scores = read_result(f'{data_path}/eval_empatheticdialogues_grade_{model}/model')
             target_dir = f'outputs/{metric}/grade_data/empatheticdialogues/{model}'
             write_result(target_dir, metric, scores)
 

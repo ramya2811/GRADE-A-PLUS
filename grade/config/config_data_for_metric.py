@@ -1,10 +1,10 @@
 import copy
 init_embd_file = './tools/numberbatch-en-19.08.txt'
-pickle_data_dir = './data/eval_engage'
+pickle_data_dir = './data/eval_convai2_grade_bert_ranker'
 max_keyword_length = 16
 max_seq_length = 128
 num_classes = 2
-num_test_data = 600
+num_test_data = 150
 
 vocab_file = './data/DailyDialog/keyword.vocab'
 train_batch_size = 8

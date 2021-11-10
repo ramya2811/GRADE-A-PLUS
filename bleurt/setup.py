@@ -23,7 +23,7 @@ with open("README.md", "r") as fh:
   long_description = fh.read()
 
 install_requires = [
-    "pandas", "numpy", "scipy", "tensorflow>=1.15", "tf-slim>=1.1"
+    "pandas", "numpy", "scipy", "tensorflow", "tf-slim>=1.1"
 ]
 
 setuptools.setup(

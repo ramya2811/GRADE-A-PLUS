@@ -129,29 +129,12 @@ dmypy.json
 .pyre/
 
 # data
-*.csv
-*.txt
-*.text
-*.json
-*.keyword
-*.embed
-*.embedding
-*.ctx_keyword
-*.rep_keyword
-*.vocab
-*.dict
-*.bak
-*.npz
-*.zip
-*.out
-*.log
-*.tsv
+
 
 
 # model checkpoints
 *.bin
 *.ckpt
-*.pkl
 *.backup
 *.pth
 
@@ -159,22 +142,7 @@ dmypy.json
 *.tfrecord
 
 # metric models
-
 bleurt/bleurt-tiny-512
-
-am_fm/examples/dstc6/multi_cased_L-12_H-768_A-12
-am_fm/examples/dstc6/am_model
-am_fm/examples/dstc6/twitter
-am_fm/examples/dstc6/test_datac
-
-predictive_engagement/data
-predictive_engagement/model
-
-ruber_and_bert_ruber/RUBER/data
-ruber_and_bert_ruber/BERT-RUBER/bert_model
-ruber_and_bert_ruber/BERT-RUBER/DailyDialogue-Parser
-
-usr_fed/usr/pretrained_models/
 
 deb/deb_trained_on_rand_and_adv_neg
 

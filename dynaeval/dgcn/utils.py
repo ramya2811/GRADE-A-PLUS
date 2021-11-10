@@ -27,11 +27,13 @@ def get_logger(level=logging.INFO):
 
 
 def save_pkl(obj, file):
+    file ='./'+file
     with open(file, "wb") as f:
         pickle.dump(obj, f)
 
 
 def load_pkl(file):
+    file ='./'+file
     with open(file, "rb") as f:
         return pickle.load(f)
 
