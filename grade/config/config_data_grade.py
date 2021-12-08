@@ -1,12 +1,12 @@
 import copy
+max_keyword_length = 16
+max_seq_length = 128
+num_classes = 2
+num_train_data = 100
 max_train_bert_epoch = 5
-num_train_data = 118528
 pickle_data_dir = './data/DailyDialog'
 train_batch_size = 16
 init_embd_file = './tools/numberbatch-en-19.08.txt'
-max_keyword_length = 16 
-max_seq_length = 128
-num_classes = 2
 
 vocab_file = '{}/keyword.vocab'.format(pickle_data_dir)
 display_steps = 1000 # Print training loss every display_steps; -1 to disable
@@ -15,8 +15,8 @@ eval_steps = 5000 # Eval on the dev set every eval_steps; -1 to disable
 # Proportion of training to perform linear learning rate warmup for.
 # E.g., 0.1 = 10% of training.
 warmup_proportion = 0.1
-eval_batch_size = 16
-test_batch_size = 16
+eval_batch_size = 1
+test_batch_size = 1
 
 metric_pickle_data_dir = './data/DailyDialog/daily_metric'
 

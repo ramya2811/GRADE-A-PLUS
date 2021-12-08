@@ -1,6 +1,6 @@
 import copy
 init_embd_file = './tools/numberbatch-en-19.08.txt'
-pickle_data_dir = './data/eval_convai2_grade_bert_ranker'
+pickle_data_dir = './data/eval_empatheticdialogues_grade_transformer_generator'
 max_keyword_length = 16
 max_seq_length = 128
 num_classes = 2

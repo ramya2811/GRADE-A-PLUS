@@ -18,6 +18,8 @@ class GRADE(nn.Module):
     def __init__(self, args, model_config, data_config, embedding_init_value, device):
         super().__init__()
 
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
         self.config_model = model_config
         self.config_data = data_config
         self.vocab = tx.data.Vocab(self.config_data.vocab_file)
@@ -152,6 +154,7 @@ class GRADE(nn.Module):
         # therefore, we need to transform the coh_ixs accordingly
         """
         device = coh_ixs.get_device()
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         loss_coh_ixs = torch.add(torch.add(coh_ixs*(-1), torch.ones(coh_ixs.size()).to(device))*2, torch.ones(coh_ixs.size()).to(device)*(-1))
         loss_coh = self.hinge(coh1, coh2, loss_coh_ixs)
         ranking_loss = loss_coh.mean()

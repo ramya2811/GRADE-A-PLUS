@@ -1,6 +1,7 @@
 SEED=$1
 GPU=$2
 
+echo "Entered Compute GRADE K2 N10 N10"
 
 DIALOG_DATASET_NAME=$3
 DIALOG_MODEL_NAME=$4

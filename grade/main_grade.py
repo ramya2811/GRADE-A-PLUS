@@ -152,6 +152,9 @@ def main():
                                       device=device)
     embedding_init_value = train_dataset.embedding_init_value
 
+
+    print("TEST", train_dataset, metric_dataset)
+
     # build vocab2id id2vocab
     vocab2id, id2vocab = build_vocab_id(os.path.join(args.dataset_dir, "keyword.vocab"))
     pair_hops = load_tuples_hops(os.path.join(args.dataset_dir, "dialog_keyword_tuples_multiGraph.hop")) 
@@ -190,6 +193,8 @@ def main():
 
         inner_step = 0
         grad_clip = 10
+
+        
         for batch_id, batch in enumerate(iterator):
             avg_rec = tx.utils.AverageRecorder()
             optim.zero_grad()
@@ -263,6 +268,7 @@ def main():
             optim.step()
             scheduler.step()
             step = scheduler.last_epoch
+            
             cur_lr = scheduler.optimizer.param_groups[0]['lr']
 
             end_time = time()
@@ -277,6 +283,8 @@ def main():
                     step, cur_lr, batch_time, left_time)
 
             eval_steps = config_data.eval_steps
+
+            print("TEST step ",step)
             if eval_steps > 0 and step % eval_steps == 0:
                 eval_losses_min = _eval_epoch(optim, scheduler, epoch, eval_losses_min, step) 
                 _do_metrics(optim, scheduler, epoch, step)

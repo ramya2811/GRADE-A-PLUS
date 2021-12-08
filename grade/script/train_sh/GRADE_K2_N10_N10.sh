@@ -18,7 +18,7 @@ TASK='train'
 MODEL_FILE='model.evaluation_model.GRADE.'$EVALUATOR
 PICKLE_DATA_DIR='./data/'$TRAINING_DATASET
 
-python setting.py $INIT_EMBD_FILE $TRAIN_BATCH_SIZE $PICKLE_DATA_DIR $CONFIG_DATA_FILE  $max_train_bert_epoch 
+#python setting.py $INIT_EMBD_FILE $TRAIN_BATCH_SIZE $PICKLE_DATA_DIR $CONFIG_DATA_FILE  $max_train_bert_epoch 
 
 python main_grade.py --do-train --config-data $CONFIG_DATA_NAME --model-file $MODEL_FILE --output-dir $OUTPUT_DIR --gpu $GPU --devices_id $DEVICES_ID --task $TASK \
 --seed $SEED --metric-name $METRIC_NAME --dataset_dir $PICKLE_DATA_DIR --unlimit_hop $UNLIMIT_HOP --model_name $MODEL_NAME

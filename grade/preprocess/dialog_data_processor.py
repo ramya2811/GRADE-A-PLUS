@@ -185,6 +185,7 @@ class DialogDataProcessor:
         self.uttr_kw_mapping = {}
         for dialog in tqdm(self.list_all_dialogs):
             for utterance in dialog:
+                print("TEST utterance 2",utterance)
                 cur_keywords = self.kw_extractor.idf_extract(utterance)
                 self.uttr_kw_mapping[utterance] = cur_keywords
         print('(utterances -> keyword) mapping size: ', len(self.uttr_kw_mapping))
@@ -215,6 +216,7 @@ class DialogDataProcessor:
         counter = collections.Counter()
         for dialog in tqdm(self.list_all_dialogs):
             for utterance in dialog:
+                print("TEST utterance 3",utterance)
                 counter.update(simp_tokenize(utterance))
         print('Total vocab count: ', len(counter.items()))
 
@@ -243,6 +245,8 @@ class DialogDataProcessor:
             current_dialog_path = os.path.join(self.raw_data_dir,
                                                set_name,
                                                'dialogues_{}.txt'.format(set_name))
+            
+            print("TEST current dialog path",self.raw_data_dir,set_name,current_dialog_path,os.getcwd())
             with open(current_dialog_path, 'r') as f:
                 raw_dialog_data = f.readlines()
             for dialog_str in tqdm(raw_dialog_data):
@@ -267,6 +271,7 @@ class DialogDataProcessor:
         for dialog in tqdm(self.original_dialogs):
             current_dialog_keywords = []
             for utterance in dialog:
+                print("TEST utterance 4",utterance)
                 keywords_str = ' '.join(self.uttr_kw_mapping[utterance])
                 current_dialog_keywords.append(keywords_str)
             self.original_dialogs_keywords.append(current_dialog_keywords)

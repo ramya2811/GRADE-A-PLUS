@@ -7,6 +7,8 @@ YOUR_DIALOG_MODEL_NAME=model
 # Return to main directory
 cd ../
 
+echo "TEST" $YOUR_DIALOG_DATASET_NAME $YOUR_DIALOG_MODEL_NAME
+
 # Extract Keywords
 bash extract_kw.sh $YOUR_DIALOG_DATASET_NAME $YOUR_DIALOG_MODEL_NAME
 

@@ -10,12 +10,13 @@ import json
 
 from keyword_extractor import KeywordExtractor
 from utils.load_data_utils import kw_tokenize
-
+import neuspell
+from neuspell import available_checkers, CnnlstmChecker
 
 # ==================================================================
 # Function Definition
 # ==================================================================
-def _calculate_idf(list_all_dialogs, idf_path=None, load_file_if_exists=True):
+def _calculate_idf(list_all_dialogs, idf_path=None, load_file_if_exists=False):
     if load_file_if_exists:
         if os.path.isfile(idf_path):
             with open(idf_path, 'rb') as f:
@@ -43,6 +44,7 @@ def _calculate_idf(list_all_dialogs, idf_path=None, load_file_if_exists=True):
     for k,v in counter.items():
         idf_dict[k] = np.log10(total / (v+1.))
 
+    
     print('Saving idf into {}...'.format(idf_path))
     with open(idf_path, 'wb') as f:
         pickle.dump(idf_dict, f)
@@ -50,7 +52,7 @@ def _calculate_idf(list_all_dialogs, idf_path=None, load_file_if_exists=True):
     return idf_dict
 
 
-def _obtain_candidate_keywords(list_all_dialogs, candi_kw_path, min_kw_freq=1, load_file_if_exists=True):
+def _obtain_candidate_keywords(list_all_dialogs, candi_kw_path, min_kw_freq=1, load_file_if_exists=False):
     r"""Obtain and save the candidate keywords used for extracting keywords.
 
     Inputs: list_all_dialogs, candi_kw_path, load_file_if_exists
@@ -74,6 +76,7 @@ def _obtain_candidate_keywords(list_all_dialogs, candi_kw_path, min_kw_freq=1, l
         raise Exception('no dialogs provided for obtaining candidate keywords')
 
     candi_kw_dir = os.path.dirname(candi_kw_path)
+
     if not os.path.exists(candi_kw_dir):
         os.makedirs(candi_kw_dir)
 
@@ -239,9 +242,11 @@ def load_texts(text_input_path, seperator='|||'):
     return texts
 
 
-def extract_keywords(dialogs, kw_extractor, kw_output_path,  seperator='|||'):
-    dialogs_keywords = [[' '.join(kw_extractor.idf_extract(utterance)) for utterance in dialog]
+def extract_keywords(dialogs, kw_extractor, kw_output_path,is_context, seperator='|||'):
+    dialogs_keywords = [[' '.join(kw_extractor.idf_extract(utterance,is_context)) for utterance in dialog]
                         for dialog in tqdm(dialogs)]
+    
+   
     with open(kw_output_path, 'w') as f:
         print('Saving keywords into {}...'.format(kw_output_path))
         for keywords_in_a_dialog in dialogs_keywords:
@@ -259,7 +264,11 @@ if __name__ == '__main__':
     parser.add_argument('--candi_kw_path', type=str, help='path of candidate keywords file')
     parser.add_argument('--input_text_path', type=str, help='path of dialog text that need extracting keywords')
     parser.add_argument('--kw_output_path', type=str, help='path of dialog text that need extracting keywords')
+    parser.add_argument('--is_context', type=str, help='context')
     args = parser.parse_args()
+
+    # checker = CnnlstmChecker()
+    # checker.from_pretrained()
 
     output_info = 'Start keyword extraction [dataset: {}, file: {}]'.format(
         args.dataset_name, args.input_text_path)
@@ -267,22 +276,37 @@ if __name__ == '__main__':
     print(output_info)
     print('-' * len(output_info))
 
+    is_context = False
+    if args.is_context == 'true':
+        is_context = True
+
     # initialize keyword extractor
     try:
+        raise Exception("TEST trying to obtain keywords from dataset")
         candi_keywords = _obtain_candidate_keywords(None, args.candi_kw_path)
         idf_dict = _calculate_idf(None, args.idf_path)
         kw_extractor = KeywordExtractor(candi_keywords, idf_dict)
+        print("TEST Try extract_keywords.py")
     except Exception as err:
-        print('Exception: ', err)
+       
         # load all dialogs of the specific dataset
         dataset = load_dataset(args.dataset_name, args.dataset_dir)
+        #Modified
+        # preprocessed_dataset= []
+        # for dialog in dataset:
+        #     preprocessed_utterances = []
+        #     for utterance in dialog:
+        #         preprocessed_utterances.append(checker.correct(utterance).lower())
+        #     preprocessed_dataset.append(preprocessed_utterances)
+        # dataset = preprocessed_dataset
+        #print("Dataset Testing", dataset, is_context)
         candi_keywords = _obtain_candidate_keywords(dataset, args.candi_kw_path)
         idf_dict = _calculate_idf(dataset, args.idf_path)
         kw_extractor = KeywordExtractor(candi_keywords, idf_dict)
 
+    #adding converter
 
     # load texts that need extracting keywords
     texts = load_texts(args.input_text_path)
     # extract keywords
-    extract_keywords(texts, kw_extractor, args.kw_output_path)
-    print('Done.')
+    extract_keywords(texts, kw_extractor, args.kw_output_path,is_context)

@@ -63,6 +63,7 @@ class DataProcessor:
     def _read_tsv2(self, samples_dir):
         r"""Gets the list of samples."""
         samples_list = []
+        print("Samples Directory",samples_dir)
         with open(samples_dir, "r") as f:
             for line in f.readlines():
                 line_str = line.strip()
@@ -72,6 +73,8 @@ class DataProcessor:
     @classmethod
     def _read_tsv(cls, input_file, quotechar=None):
         r"""Reads a tab separated value file."""
+
+        print(input_file)
         with open(input_file, "r") as f:
             reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
             lines = []

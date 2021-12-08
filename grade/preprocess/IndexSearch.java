@@ -22,7 +22,6 @@ import org.apache.lucene.search.SortField;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import java.lang.Math;
 
 public class IndexSearch{
@@ -51,6 +50,8 @@ public class IndexSearch{
                 sc = null;
                 allQueries = new ArrayList<>();
                 cur_file = file + data_modes.get(i) + "/pair-1/original_dialog_response.text";
+
+                System.out.println("TEST FILE PATH "+cur_file);
 
                 String o_filepath = file + data_modes.get(i) + "/original_dialog_lexical_neg.response";
                 File o_file = new File(o_filepath);
@@ -82,57 +83,59 @@ public class IndexSearch{
                     int start = 0;
                     int end = 0;
 
-                    if (topDocs.totalHits.value > 500000){
+
+                    System.out.println("TEST"+topDocs.totalHits);
+                    if (topDocs.totalHits > 500000){
                         topDocs = searcher.search(query, 300000); 
                         start = 299995;
                         end = 299999;
                     }
-                    else if (topDocs.totalHits.value > 100000){
+                    else if (topDocs.totalHits > 100000){
                         topDocs = searcher.search(query, 70000); 
                         start = 69995;
                         end = 69999;
                     }
-                    else if (topDocs.totalHits.value > 50000){
+                    else if (topDocs.totalHits > 50000){
                         topDocs = searcher.search(query, 30000); 
                         start = 29995;
                         end = 29999;
                     }
-                    else if (topDocs.totalHits.value > 10000){
+                    else if (topDocs.totalHits > 10000){
                         topDocs = searcher.search(query, 7000); 
                         start = 6995;
                         end = 6999;
                     }
-                    else if (topDocs.totalHits.value > 1000){
+                    else if (topDocs.totalHits > 1000){
                         topDocs = searcher.search(query, 700); 
                         start = 695;
                         end = 699;
                     }
-                    else if (topDocs.totalHits.value > 500){
+                    else if (topDocs.totalHits > 500){
                         topDocs = searcher.search(query, 200); 
                         start = 195;
                         end = 199;
                     }
-                    else if (topDocs.totalHits.value > 200){
+                    else if (topDocs.totalHits > 200){
                         topDocs = searcher.search(query, 100); 
                         start = 95;
                         end = 99;
                     }
-                    else if (topDocs.totalHits.value > 100){
+                    else if (topDocs.totalHits > 100){
                         topDocs = searcher.search(query, 50); 
                         start = 45;
                         end = 49;
                     }
-                    else if (topDocs.totalHits.value > 50){
+                    else if (topDocs.totalHits > 50){
                         topDocs = searcher.search(query, 20); 
                         start = 15;
                         end = 19;
                     }
-                    else if (topDocs.totalHits.value > 20){
+                    else if (topDocs.totalHits > 20){
                         topDocs = searcher.search(query, 15); 
                         start = 10;
                         end = 14;
                     }
-                    else if (topDocs.totalHits.value > 5){
+                    else if (topDocs.totalHits > 5){
                         topDocs = searcher.search(query, 5); 
                         start = 0;
                         end = 4;

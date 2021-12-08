@@ -1,5 +1,8 @@
 DIALOG_DATASET_NAME=$1
 DIALOG_MODEL_NAME=$2
+IS_CONTEXT=true
+
+echo "TEST" $1 $2
 
 # Ctx
 DATAPREFIX=./evaluation/eval_data/$DIALOG_DATASET_NAME/$DIALOG_MODEL_NAME/
@@ -18,13 +21,15 @@ python ./preprocess/extract_keywords.py \
     --idf_path $IDF_PATH \
     --candi_kw_path $CANDI_KW_PATH \
     --input_text_path $INPUT_TEXT_PATH \
-    --kw_output_path $OUTPUT_KW_PATH
+    --kw_output_path $OUTPUT_KW_PATH \
+    --is_context $IS_CONTEXT
 
 # Hyp
 CTX_IN_FILENAME=human_hyp.txt
 CTX_OUT_FILENAME=human_hyp.keyword
 INPUT_TEXT_PATH=$DATAPREFIX$CTX_IN_FILENAME
 OUTPUT_KW_PATH=$DATAPREFIX$CTX_OUT_FILENAME
+IS_CONTEXT=false
 
 python ./preprocess/extract_keywords.py \
     --dataset_name $DIALOG_DATASET_NAME \
@@ -32,5 +37,6 @@ python ./preprocess/extract_keywords.py \
     --idf_path $IDF_PATH \
     --candi_kw_path $CANDI_KW_PATH \
     --input_text_path $INPUT_TEXT_PATH \
-    --kw_output_path $OUTPUT_KW_PATH
+    --kw_output_path $OUTPUT_KW_PATH \
+    --is_context $IS_CONTEXT
 

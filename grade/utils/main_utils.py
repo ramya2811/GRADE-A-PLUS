@@ -5,7 +5,7 @@ np.set_printoptions(threshold=np.inf)
 from tqdm import tqdm
 import torch
 import scipy.sparse as sp
-
+from nltk.corpus import wordnet as wn
 from .normalization import fetch_normalization
 
 def maybe_create_file(path):
@@ -17,18 +17,14 @@ def get_lr_multiplier(step: int, total_steps: int, warmup_steps: int):
     of warm-up steps. The learning rate schedule follows a linear warm-up and linear decay.
     """
     step = min(step, total_steps)
-
     multiplier = (1 - (step - warmup_steps) / (total_steps - warmup_steps))
-
     if warmup_steps > 0 and step < warmup_steps:
         warmup_percent_done = step / warmup_steps
         multiplier = warmup_percent_done
-
     return multiplier
 
 
 def add_loss_accu_msg(args, logging, avg_rec, output_tuple, batch_size):
-
     losses, ranking_loss, ranking_accu, pred_preference_label, score_of_pair_1, score_of_pair_2 = output_tuple
     avg_rec.add([losses.mean(), ranking_loss.mean(), ranking_accu.mean(), \
         score_of_pair_1.mean(), score_of_pair_2.mean()], batch_size)
@@ -133,6 +129,8 @@ def load_hop_mean_embedding(oneHop_mean_path, twoHop_mean_path):
 def get_adjs1(oneHop_mean_embedding_dict, twoHop_mean_embedding_dict, input_ids_Keywords, input_ids_ctxKeywords, \
     input_ids_repKeywords, pair_hops, vocab2id, id2vocab, unlimit_hop):
 
+    #print("main_utils id2vocab",id2vocab)
+
     #device = input_ids_Keywords.get_device()
     device = input_ids_Keywords.device
     batch_size = input_ids_Keywords.shape[0]
@@ -163,19 +161,28 @@ def get_adjs1(oneHop_mean_embedding_dict, twoHop_mean_embedding_dict, input_ids_
             for t_index, target_id in enumerate(input_ids_repKeywords[batch_id]):
                 if target_id <=2: #[bos] [eos] [pad]
                     continue
-
                 target_id = np.array(target_id.cpu()).tolist()
                 target = id2vocab[target_id]
-
                 if (source, target) not in pair_hops: 
                     hop = unlimit_hop
                 else:
                     hop = pair_hops[(source, target)]
                     if hop == -1:
                         hop = unlimit_hop
-
-                batch_adjs[batch_id][s_index][t_index] = 1./hop 
-                batch_adjs[batch_id][t_index][s_index] = 1./hop 
+                #TEST Synonymy
+                max_score = 0
+                if source != '<UNK>' and target != '<UNK>':
+                    for source_syn in wn.synsets(source):
+                        for target_syn in wn.synsets(target):
+                            temp=source_syn.path_similarity(target_syn)
+                            if temp:
+                                max_score = max(max_score,temp)
+                #if max_score > 1./hop:
+                    # print("ANOMALY ",source,target)
+                    # print("hop score", 1./hop,"wornet similarity",max_score)
+                max_score = max(max_score,1./hop)
+                batch_adjs[batch_id][s_index][t_index] = max_score
+                batch_adjs[batch_id][t_index][s_index] = max_score
 
     for batch_id in range(batch_size):
         adj = batch_adjs[batch_id]
@@ -198,6 +205,7 @@ def get_adjs2(input_ids_Keywords, input_ids_ctxKeywords, input_ids_repKeywords, 
     max_nodes_len = input_ids_Keywords.shape[1]
     batch_adjs = np.zeros((batch_size, max_nodes_len, max_nodes_len))
 
+
     for batch_id in range(batch_size):
         for s_index, source_id in enumerate(input_ids_ctxKeywords[batch_id]):
             if source_id <=2: #[pad] [bos] [eos]
@@ -218,8 +226,21 @@ def get_adjs2(input_ids_Keywords, input_ids_ctxKeywords, input_ids_repKeywords, 
                     if hop == -1:
                         hop = unlimit_hop
                 # print(source, target, hop)
-                batch_adjs[batch_id][s_index][t_index] = 1./hop 
-                batch_adjs[batch_id][t_index][s_index] = 1./hop 
+
+                max_score = 0
+                if source != '<UNK>' and target != '<UNK>':
+                    for source_syn in wn.synsets(source):
+                        for target_syn in wn.synsets(target):
+                            temp=source_syn.path_similarity(target_syn)
+                            if temp:
+                                max_score = max(max_score,temp)
+                # if max_score > 1./hop:
+                #     print("ANOMALY 2",source,target)
+                #     print("hop score 2", 1./hop,"wornet similarity",max_score)
+                max_score = max(max_score,1./hop)
+
+                batch_adjs[batch_id][s_index][t_index] = max_score
+                batch_adjs[batch_id][t_index][s_index] = max_score
 
     for batch_id in range(batch_size):
         adj = batch_adjs[batch_id]

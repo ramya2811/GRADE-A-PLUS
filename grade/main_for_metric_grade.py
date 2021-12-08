@@ -178,7 +178,7 @@ def main():
                     pair_1_input_ids_repKeywords, pair_hops, vocab2id, id2vocab, args.unlimit_hop)
                 pair_1_batch_onehop_embedding_matrix, pair_1_batch_twohop_embedding_matrix=None, None
 
-           
+            #print("TEST Batch Results",batch['keyword_pair_1_text_ids'],batch['keyword_pair_1_length'],batch['ctx_keyword_pair_1_text_ids'],batch['rep_keyword_pair_1_text_ids'])
 
             scores = model('metric', 
                 pair_1_input_ids_raw_text=pair_1_input_ids_raw_text,
@@ -197,7 +197,6 @@ def main():
         reduced_metrics[args.eval_metric_name] = score
         #auto_scores = np.squeeze(auto_scores, 1).tolist()
         non_reduced_metrics[args.eval_metric_name] = auto_scores
-
         return reduced_metrics, non_reduced_metrics
 
 
